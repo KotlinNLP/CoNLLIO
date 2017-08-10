@@ -5,8 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * ------------------------------------------------------------------*/
 
-package examples
-
 import com.kotlinnlp.conllio.CoNLLReader
 import java.io.File
 
