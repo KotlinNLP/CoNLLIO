@@ -24,8 +24,8 @@ object CoNLLUEvaluator : CorpusEvaluator {
   /**
    * The absolute path of the external script.
    */
-  private val SCRIPT_ABSOLUTE_PATH: String = File(
-    Thread.currentThread().contextClassLoader.getResource(SCRIPT_RELATIVE_PATH).file).absolutePath
+  private val SCRIPT_CODE: String =
+    Thread.currentThread().contextClassLoader.getResource(SCRIPT_RELATIVE_PATH).readText()
 
   /**
    * Evaluate the system output against a gold standard.
@@ -40,6 +40,15 @@ object CoNLLUEvaluator : CorpusEvaluator {
     require(File(systemFilePath).exists()) { "File $systemFilePath not found." }
     require(File(goldFilePath).exists()) { "File $goldFilePath not found." }
 
-    return "python $SCRIPT_ABSOLUTE_PATH -v $goldFilePath $systemFilePath".runAsCommand()
+    File("/tmp/conll17_ud_eval.py").writeText(SCRIPT_CODE)
+
+    val command = "python /tmp/conll17_ud_eval.py -v $goldFilePath $systemFilePath"
+    val result = command.runAsCommand()
+
+    File("/tmp/conll17_ud_eval.py").delete()
+
+    require(result != null){ "No feedback for command $command " }
+
+    return result
   }
 }
