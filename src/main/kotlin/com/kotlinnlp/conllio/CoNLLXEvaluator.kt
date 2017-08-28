@@ -24,8 +24,8 @@ object CoNLLXEvaluator : CorpusEvaluator {
   /**
    * The absolute path of the external script.
    */
-  private val SCRIPT_ABSOLUTE_PATH: String = File(
-    Thread.currentThread().contextClassLoader.getResource(SCRIPT_RELATIVE_PATH).file).absolutePath
+  private val SCRIPT_CODE: String =
+    Thread.currentThread().contextClassLoader.getResource(SCRIPT_RELATIVE_PATH).readText()
 
   /**
    * Evaluate the system output against a gold standard.
@@ -40,6 +40,15 @@ object CoNLLXEvaluator : CorpusEvaluator {
     require(File(systemFilePath).exists()) { "File $systemFilePath not found." }
     require(File(goldFilePath).exists()) { "File $goldFilePath not found." }
 
-    return "perl $SCRIPT_ABSOLUTE_PATH -q -g $goldFilePath -s $systemFilePath".runAsCommand()
+    File("/tmp/conll_eval.pl").writeText(SCRIPT_CODE)
+
+    val command = "perl /tmp/conll_eval.pl -q -g $goldFilePath -s $systemFilePath"
+    val result = command.runAsCommand()
+
+    File("/tmp/conll_eval.pl").delete()
+
+    require(result != null){ "No feedback for command $command " }
+
+    return result
   }
 }
