@@ -17,15 +17,14 @@ import java.nio.file.Paths
 object CoNLLUEvaluator : CorpusEvaluator {
 
   /**
-   * The relative path of the external script.
+   * The path of the external script within the resources directory.
    */
-  private val SCRIPT_RELATIVE_PATH: String = Paths.get("evaluation_scripts", "python", "conll17_ud_eval.py").toString()
+  private val SCRIPT_PATH: String = Paths.get("/", "evaluation_scripts", "python", "conll17_ud_eval.py").toString()
 
   /**
    * The absolute path of the external script.
    */
-  private val SCRIPT_CODE: String =
-    Thread.currentThread().contextClassLoader.getResource(SCRIPT_RELATIVE_PATH).readText()
+  private val SCRIPT_CODE: String = this::class.java.getResource(this.SCRIPT_PATH).readText()
 
   /**
    * Evaluate the system output against a gold standard.
@@ -40,12 +39,14 @@ object CoNLLUEvaluator : CorpusEvaluator {
     require(File(systemFilePath).exists()) { "File $systemFilePath not found." }
     require(File(goldFilePath).exists()) { "File $goldFilePath not found." }
 
-    File("/tmp/conll17_ud_eval.py").writeText(SCRIPT_CODE)
+    val scriptFilename: String = Paths.get("/", "tmp", "conll17_ud_eval.py").toString()
 
-    val command = "python /tmp/conll17_ud_eval.py -v $goldFilePath $systemFilePath"
+    File(scriptFilename).writeText(this.SCRIPT_CODE)
+
+    val command = "python $scriptFilename -v $goldFilePath $systemFilePath"
     val result = command.runAsCommand()
 
-    File("/tmp/conll17_ud_eval.py").delete()
+    File(scriptFilename).delete()
 
     require(result != null){ "No feedback for command $command " }
 
