@@ -39,7 +39,8 @@ object CoNLLXEvaluator : CorpusEvaluator {
     require(File(systemFilePath).exists()) { "File $systemFilePath not found." }
     require(File(goldFilePath).exists()) { "File $goldFilePath not found." }
 
-    val scriptFilename: String = Paths.get("/", "tmp", "conll17_ud_eval.py").toString()
+    val timestamp: Long = System.currentTimeMillis()
+    val scriptFilename: String = Paths.get("/", "tmp", "conll_eval_$timestamp.pl").toString()
 
     File(scriptFilename).writeText(this.SCRIPT_CODE)
 
