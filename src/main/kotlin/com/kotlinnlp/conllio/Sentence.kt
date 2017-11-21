@@ -92,6 +92,6 @@ class Sentence(
       ""
     }
 
-    return comments + this.tokens.map { it.toCoNLL() }.joinToString("\n")
+    return comments + this.tokens.joinToString("\n") { it.toCoNLL() }
   }
 }
