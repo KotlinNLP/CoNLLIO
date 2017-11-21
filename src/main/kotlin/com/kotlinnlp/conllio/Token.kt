@@ -18,6 +18,10 @@ package com.kotlinnlp.conllio
  * @property feats a list of morphological features (they could also be syntactic or semantic)
  * @property head the Head of the current word, which is either a value of ID or zero (0).
  * @property deprel the dependency relation to the HEAD
+ * @property multiWordForm the original form that occurs in the sentence in case of multi-word tokens
+ *                         (assigned to the first token only)
+ * @property multiWordRange the id-range to which this token belongs in case of multi-word tokens.
+ *                          Multi-word tokens are indexed with integer ranges like 1-2 or 3-5
  * @property lineNumber the line number of the [Token] in the tree-bank
  */
 data class Token(
@@ -29,6 +33,8 @@ data class Token(
   val feats: Map<String, String>,
   val head: Int?,
   val deprel: String,
+  val multiWordForm: String? = null,
+  val multiWordRange: IntRange? = null,
   val lineNumber: Int = 0
 ){
 
@@ -63,17 +69,6 @@ data class Token(
   }
 
   /**
-   * The original form that occurs in the sentence in case of multi-word tokens.
-   */
-  var multiWordForm: String? = null
-
-  /**
-   * The id-range to which this token belongs in case of multi-word tokens.
-   * Multi-word tokens are indexed with integer ranges like 1-2 or 3-5.
-   */
-  var multiWordRange: IntRange? = null
-
-  /**
    * True if the token has a not-null [multiWordRange].
    */
   val isMultiWordToken: Boolean get() = this.multiWordRange != null
@@ -82,7 +77,7 @@ data class Token(
    * True if the token has a not-null [multiWordRange] and is the first of the range.
    */
   private val isFirstMultiWordToken: Boolean
-    get() = this.multiWordRange != null && this.id == this.multiWordRange!!.first
+    get() = this.multiWordRange != null && this.id == this.multiWordRange.first
 
   /**
    * @return a multi-word token line in CoNLL format (Id-range, FORM value and underscore in all the remaining fields).

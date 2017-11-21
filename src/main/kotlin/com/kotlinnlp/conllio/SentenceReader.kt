@@ -143,20 +143,26 @@ class SentenceReader(val lines: ArrayList<Pair<Int, String>>) {
    *
    * Note: in this implementation we ignore the fields DEPS and MISC.
    *
-   * @param line a CoNLL line <line-number, content>
+   * @param i a line number
+   * @param body a line content
+   * @param multiWordForm the original form that occurs in the sentence in case of multi-word tokens
+   *                         (assigned to the first token only)
+   * @param multiWordRange the id-range to which this token belongs in case of multi-word tokens
    *
    * @return a new Token
    */
-  private fun buildToken(line: Pair<Int, String>): Token {
-
-    val (i, body) = line
+  private fun buildToken(
+    i: Int,
+    body: String,
+    multiWordForm: String? = null,
+    multiWordRange: IntRange? = null): Token {
 
     val fields = body.split('\t')
 
     require(fields.size == 10) { "Invalid content at line $i:\n$body" }
 
     require(fields.slice(3 until 10).none{ it.contains(" ") }) {
-      "Fields other than FORM and LEMMA must not contain space characters.\nLine: $line\n"
+      "Fields other than FORM and LEMMA must not contain space characters.\nLine $i: $body\n"
     }
 
     return Token(
@@ -168,6 +174,8 @@ class SentenceReader(val lines: ArrayList<Pair<Int, String>>) {
       feats = this.extractFeatures(fields[5]),
       head = if (fields[6] == Token.emptyFiller) null else fields[6].toInt(),
       deprel = fields[7],
+      multiWordForm = multiWordForm,
+      multiWordRange = multiWordRange,
       lineNumber = i
     )
   }
@@ -242,11 +250,11 @@ class SentenceReader(val lines: ArrayList<Pair<Int, String>>) {
 
       require(this.curLine.second.isTokenLine()) { "Expected Token at line $lineIndex" }
 
-      val token = this.readSingleToken()
-
-      if (id == idRange.first) token.multiWordForm = form
-
-      token.multiWordRange = idRange
+      this.addToken(this.buildToken(
+        i = this.curLine.first,
+        body = this.curLine.second,
+        multiWordForm = if (id == idRange.first) form else null,
+        multiWordRange = idRange))
     }
   }
 
@@ -256,7 +264,7 @@ class SentenceReader(val lines: ArrayList<Pair<Int, String>>) {
    * @return the last inserted Token
    */
   private fun readSingleToken(): Token {
-    val token: Token = this.buildToken(this.curLine)
+    val token: Token = this.buildToken(i = this.curLine.first, body = this.curLine.second)
     this.addToken(token)
     return token
   }
