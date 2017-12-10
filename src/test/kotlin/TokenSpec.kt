@@ -98,7 +98,7 @@ object TokenSpec : Spek({
       }
     }
 
-    on("toCoNLL()"){
+    on("toCoNLLString()"){
       it("should return the expected CoNLL line") {
         assertTrue(Token(
           id = 1,
@@ -109,7 +109,7 @@ object TokenSpec : Spek({
           feats = HashMap<String, String>(),
           head = 0,
           deprel = "root",
-          lineNumber = 0).toCoNLL() == "1\tdogs\tdog\tnoun\t_\t_\t0\troot\t_\t_")
+          lineNumber = 0).toCoNLLString() == "1\tdogs\tdog\tnoun\t_\t_\t0\troot\t_\t_")
       }
     }
   }

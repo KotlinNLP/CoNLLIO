@@ -47,17 +47,17 @@ class Sentence(
   }
 
   /**
-   * @return True if all the [tokens] have not null heads.
+   * @return True if all the [tokens] have not null heads
    */
   fun hasAnnotatedHeads(): Boolean = this.tokens.none { it.head == null }
 
   /**
-   * @return True if the tree represented by the [heads] is non-projective.
+   * @return True if the tree represented by the [heads] is non-projective
    */
   fun isNonProjective(): Boolean = this.heads.isNonProjectiveTree()
 
   /**
-   * @return True if the tree represented by the [heads] constitute a valid tree.
+   * @return True if the tree represented by the [heads] constitute a valid tree
    */
   fun isTree(): Boolean = this.heads.isTree()
 
@@ -67,9 +67,9 @@ class Sentence(
   fun isSingleRoot(): Boolean = this.heads.isSingleRoot()
 
   /**
-   * Check if the sentence has a valid tree structure and raises an exception otherwise.
+   * Check if the sentence has a valid tree structure and raises an exception otherwise
    *
-   * @param requireSingleRoot check if the tree has one single root.
+   * @param requireSingleRoot check if the tree has one single root
    */
   fun assertValidCoNLLTree(requireSingleRoot: Boolean = true) {
     if (!this.heads.isTree()) {
@@ -81,17 +81,17 @@ class Sentence(
   }
 
   /**
-   * @param writeComments whether to write the sentence comments.
+   * @param writeComments whether to write the sentence comments
    *
-   * @return the CoNLL string representation of this sentence.
+   * @return the CoNLL string representation of this sentence
    */
-  fun toCoNLL(writeComments: Boolean): String {
+  fun toCoNLLString(writeComments: Boolean): String {
     val comments: String = if (writeComments) {
       "# sent_id = ${this.sentenceId}\n# text = ${this.text}\n"
     } else {
       ""
     }
 
-    return comments + this.tokens.joinToString("\n") { it.toCoNLL() }
+    return comments + this.tokens.joinToString("\n") { it.toCoNLLString() }
   }
 }

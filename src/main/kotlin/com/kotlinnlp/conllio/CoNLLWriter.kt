@@ -23,7 +23,7 @@ object CoNLLWriter {
    * @return sequence of sentences represented in CoNLL-U format.
    */
   fun toText(sentences: List<Sentence>, writeComments: Boolean) = buildSequence {
-    sentences.forEach { yield(it.toCoNLL(writeComments = writeComments)) }
+    sentences.forEach { yield(it.toCoNLLString(writeComments = writeComments)) }
   }
 
   /**

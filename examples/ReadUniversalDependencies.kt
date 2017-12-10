@@ -36,6 +36,6 @@ fun main(args : Array<String>) {
 
     println("  sentences: $sentenceCount with-heads: $annotatedSentencesCount non-projective: $nonProjectiveCount.\n")
 
-    println(sentences.first().toCoNLL(writeComments = true) + '\n')
+    println(sentences.first().toCoNLLString(writeComments = true) + '\n')
   }
 }

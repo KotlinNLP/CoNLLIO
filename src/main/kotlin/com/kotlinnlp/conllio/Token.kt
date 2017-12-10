@@ -95,7 +95,7 @@ data class Token(
   }
 
   /**
-   * Perform basic properties check (positive id, head > 0 if not null, form and pos not empty)
+   * Perform basic properties check (positive id, head > 0 if not null, form and pos not empty).
    */
   init {
     if (this.id < 1) throw InvalidTokenId("Line ${this.lineNumber}")
@@ -105,10 +105,10 @@ data class Token(
   }
 
   /**
-   * @return the CoNLL string representation of this token (with the addition of a possible headline
-   * in the case this token is the first of a sequence of multi-words tokens).
+   * @return the CoNLL string representation of this token (with the addition of a possible head line in the case that
+   * this token is the first of a sequence of multi-words tokens)
    */
-  fun toCoNLL(): String {
+  fun toCoNLLString(): String {
 
     val multiWordHeadline: String? = this.buildMultiWordHeadline()
 
@@ -128,7 +128,7 @@ data class Token(
   }
 
   /**
-   * @return the CoNLL string representation of the features of this token.
+   * @return the CoNLL string representation of the features of this token
    */
   private fun featsToCoNLL() = if (this.feats.isEmpty()) {
     emptyFiller
