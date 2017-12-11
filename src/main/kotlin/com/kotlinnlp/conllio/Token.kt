@@ -118,6 +118,7 @@ data class Token(
       this.pos,
       this.pos2,
       this.featsToCoNLL(),
+      this.head?.toString() ?: emptyFiller,
       this.deprel,
       emptyFiller,
       emptyFiller).joinToString("\t")
