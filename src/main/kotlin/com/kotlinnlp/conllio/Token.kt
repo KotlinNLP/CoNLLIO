@@ -18,10 +18,7 @@ package com.kotlinnlp.conllio
  * @property feats a list of morphological features (they could also be syntactic or semantic)
  * @property head the Head of the current word, which is either a value of ID or zero (0).
  * @property deprel the dependency relation to the HEAD
- * @property multiWordForm the original form that occurs in the sentence in case of multi-word tokens
- *                         (assigned to the first token only)
- * @property multiWordRange the id-range to which this token belongs in case of multi-word tokens.
- *                          Multi-word tokens are indexed with integer ranges like 1-2 or 3-5
+ * @property multiWord the multi-word token information in case of multi-word tokens
  * @property lineNumber the line number of the [Token] in the tree-bank
  */
 data class Token(
@@ -33,8 +30,7 @@ data class Token(
   val feats: Map<String, String>,
   val head: Int?,
   val deprel: String,
-  val multiWordForm: String? = null,
-  val multiWordRange: IntRange? = null,
+  val multiWord: MultiWord? = null,
   val lineNumber: Int = 0
 ){
 
@@ -69,29 +65,32 @@ data class Token(
   }
 
   /**
-   * True if the token has a not-null [multiWordRange].
+   * True if the token has a not-null [multiWord].
    */
-  val isMultiWordToken: Boolean get() = this.multiWordRange != null
+  val isMultiWordToken: Boolean get() = this.multiWord != null
 
   /**
-   * True if the token has a not-null [multiWordRange] and is the first of the range.
+   * True if the token has a not-null [multiWord] and is the first of the range.
    */
   private val isFirstMultiWordToken: Boolean
-    get() = this.multiWordRange != null && this.id == this.multiWordRange.first
+    get() = this.multiWord != null && this.id == this.multiWord.range.first
 
   /**
    * @return a multi-word token line in CoNLL format (Id-range, FORM value and underscore in all the remaining fields).
    */
-  private fun buildMultiWordHeadline(): String? = if (this.isMultiWordToken && this.isFirstMultiWordToken) {
+  private fun buildMultiWordHeadline(): String? {
 
-    listOf(
-      this.multiWordRange!!.toCoNLLRange(),
-      this.multiWordForm!!,
-      (emptyFiller + "\t").repeat(8).trim('\t') // remove last tab
-    ).joinToString("\t")
+    return if (this.multiWord != null && this.isFirstMultiWordToken) {
 
-  } else {
-    null
+      listOf(
+        this.multiWord.getCoNLLRange(),
+        this.multiWord.form,
+        (emptyFiller + "\t").repeat(8).trim('\t') // remove last tab
+      ).joinToString("\t")
+
+    } else {
+      null
+    }
   }
 
   /**
@@ -110,18 +109,15 @@ data class Token(
    */
   fun toCoNLLString(): String {
 
-    val multiWordHeadline: String? = this.buildMultiWordHeadline()
-
-    val headline = if (multiWordHeadline != null)  multiWordHeadline + "\n" else ""
+    val headline: String = this.buildMultiWordHeadline()?.plus("\n") ?: ""
 
     return headline + listOf(
-      this.id,
+      this.id.toString(),
       this.form,
       this.lemma,
       this.pos,
       this.pos2,
       this.featsToCoNLL(),
-      this.head ?: emptyFiller,
       this.deprel,
       emptyFiller,
       emptyFiller).joinToString("\t")
@@ -135,9 +131,4 @@ data class Token(
   } else {
     this.feats.map { "${it.key}=${it.value}" }.joinToString("|")
   }
-
-  /**
-   * @return a string of the format first-last id (e.g. 1-2 or 3-5)
-   */
-  private fun IntRange.toCoNLLRange(): String = "${this.first}-${this.last}"
 }

@@ -14,7 +14,8 @@ package com.kotlinnlp.conllio
  */
 class SentenceReader(val lines: ArrayList<Pair<Int, String>>) {
 
-  companion object {
+  private companion object {
+
     /**
      * Token/word are indexed with integers like 1, 2, 3 ...
      */
@@ -40,6 +41,26 @@ class SentenceReader(val lines: ArrayList<Pair<Int, String>>) {
      * Form of the features values
      */
     val featureValuesForm = Regex("[A-Z0-9][a-zA-Z0-9]*")
+
+    /**
+     * @return true if the string is a multi-word tokens line
+     */
+    fun String.isMultiWordTokensLine(): Boolean = CoNLLSentenceReader@lineStartWithTokensRange.containsMatchIn(this)
+
+    /**
+     * @return true if the string is an empty node line
+     */
+    fun String.isEmptyNodeLine(): Boolean = CoNLLSentenceReader@lineStartWithEmptyNodeId.containsMatchIn(this)
+
+    /**
+     * @return true if the string is a token line
+     */
+    fun String.isTokenLine(): Boolean = CoNLLSentenceReader@lineStartWithTokenId.containsMatchIn(this)
+
+    /**
+     * @return true if the string is a comment line
+     */
+    fun String.isCommentLine(): Boolean = this.isNotEmpty() && this[0] == '#'
   }
 
   /**
@@ -145,17 +166,14 @@ class SentenceReader(val lines: ArrayList<Pair<Int, String>>) {
    *
    * @param i a line number
    * @param body a line content
-   * @param multiWordForm the original form that occurs in the sentence in case of multi-word tokens
-   *                         (assigned to the first token only)
-   * @param multiWordRange the id-range to which this token belongs in case of multi-word tokens
+   * @param multiWord the [MultiWord] in case of multi-word tokens
    *
    * @return a new Token
    */
   private fun buildToken(
     i: Int,
     body: String,
-    multiWordForm: String? = null,
-    multiWordRange: IntRange? = null): Token {
+    multiWord: MultiWord? = null): Token {
 
     val fields = body.split('\t')
 
@@ -174,8 +192,7 @@ class SentenceReader(val lines: ArrayList<Pair<Int, String>>) {
       feats = this.extractFeatures(fields[5]),
       head = if (fields[6] == Token.emptyFiller) null else fields[6].toInt(),
       deprel = fields[7],
-      multiWordForm = multiWordForm,
-      multiWordRange = multiWordRange,
+      multiWord = multiWord,
       lineNumber = i
     )
   }
@@ -226,10 +243,10 @@ class SentenceReader(val lines: ArrayList<Pair<Int, String>>) {
    *
    * @return <Id-range, FORM> Pair
    */
-  private fun readMultiWordInfo(): Pair<IntRange, String> {
+  private fun readMultiWordInfo(): MultiWord {
     val (_, body) = this.curLine
     val splitBody = body.split('\t')
-    return Pair(this.extractMultiWordRange(splitBody[0]), splitBody[1])
+    return MultiWord(form = splitBody[1], range = this.extractMultiWordRange(splitBody[0]))
   }
 
   /**
@@ -242,9 +259,9 @@ class SentenceReader(val lines: ArrayList<Pair<Int, String>>) {
    */
   private fun readMultiWordTokens() {
 
-    val (idRange,  form) = this.readMultiWordInfo()
+    val multiWord: MultiWord = this.readMultiWordInfo()
 
-    idRange.forEach { id ->
+    multiWord.range.forEach { id ->
 
       this.lineIndex++
 
@@ -253,8 +270,7 @@ class SentenceReader(val lines: ArrayList<Pair<Int, String>>) {
       this.addToken(this.buildToken(
         i = this.curLine.first,
         body = this.curLine.second,
-        multiWordForm = if (id == idRange.first) form else null,
-        multiWordRange = idRange))
+        multiWord = multiWord))
     }
   }
 
@@ -318,41 +334,4 @@ class SentenceReader(val lines: ArrayList<Pair<Int, String>>) {
 
     return result
   }
-
-  /**
-   * @return true if the string is a multi-word tokens line
-   */
-  private fun String.isMultiWordTokensLine(): Boolean = CoNLLSentenceReader@lineStartWithTokensRange.containsMatchIn(this)
-
-  /**
-   * @return true if the string is an empty node line
-   */
-  private fun String.isEmptyNodeLine(): Boolean = CoNLLSentenceReader@lineStartWithEmptyNodeId.containsMatchIn(this)
-
-  /**
-   * @return true if the string is a token line
-   */
-  private fun String.isTokenLine(): Boolean = CoNLLSentenceReader@lineStartWithTokenId.containsMatchIn(this)
-
-  /**
-   * @return true if the string is a comment line
-   */
-  private fun String.isCommentLine(): Boolean = this.isNotEmpty() && this[0] == '#'
-
-  /**
-   * Extract an attribute-value pair from a String, using a [separator] to separate the attribute from the value.
-   *
-   * @param separator the separator used to separate the attribute from the value, e.g. equals sign (=)
-   *
-   * @return a <attribute, value> Pair
-   */
-  private fun String.extractPair(separator: Char): Pair<String, String> {
-    require(this.contains(separator))
-    return Pair(this.substringBefore(separator).trim(), this.substringAfter(separator).trim())
-  }
-
-  /**
-   * @return a <Int, Int> Pair
-   */
-  private fun Pair<String, String>.toIntPair() = Pair(this.first.toInt(), this.second.toInt())
 }
