@@ -34,7 +34,7 @@ fun main(args : Array<String>) {
       if (it.isNonProjective()) nonProjectiveCount++
     }
 
-    println("  sentences: $sentenceCount with-heads: $annotatedSentencesCount non-projective: $nonProjectiveCount.\n")
+    println("  sentences: $sentenceCount with-heads: $annotatedSentencesCount non-projective: $nonProjectiveCount\n")
 
     println(sentences.first().toCoNLLString(writeComments = true) + '\n')
   }
