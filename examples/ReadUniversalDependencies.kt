@@ -24,8 +24,8 @@ fun main(args : Array<String>) {
     val sentences = CoNLLReader.fromFile(file = it)
 
     val sentenceCount: Int = sentences.toList().size
-    var nonProjectiveCount: Int = 0
-    var annotatedSentencesCount: Int = 0
+    var nonProjectiveCount = 0
+    var annotatedSentencesCount = 0
 
     sentences.filter { it.hasAnnotatedHeads() }.forEach {
       it.assertValidCoNLLTree() // raise exception in case of invalid tree
