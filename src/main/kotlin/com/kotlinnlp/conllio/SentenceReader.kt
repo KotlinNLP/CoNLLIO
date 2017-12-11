@@ -10,9 +10,9 @@ package com.kotlinnlp.conllio
 /**
  * The SentenceReader.
  *
- * @property lines the CoNLL-style lines to parse
+ * @param lines the CoNLL-style lines to parse
  */
-class SentenceReader(val lines: ArrayList<Pair<Int, String>>) {
+class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
 
   private companion object {
 
