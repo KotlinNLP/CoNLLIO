@@ -261,7 +261,7 @@ class SentenceReader(val lines: ArrayList<Pair<Int, String>>) {
 
     val multiWord: MultiWord = this.readMultiWordInfo()
 
-    multiWord.range.forEach { id ->
+    multiWord.range.forEach {
 
       this.lineIndex++
 
