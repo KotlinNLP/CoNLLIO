@@ -6,6 +6,18 @@ It is possible to read the CoNLL-X data format used in the CoNLL 2006 Shared Tas
 
 CoNLLIO is part of [KotlinNLP](http://kotlinnlp.com/ "KotlinNLP").
 
+
+## Import with Maven
+
+```xml
+<dependency>
+    <groupId>com.kotlinnlp</groupId>
+    <artifactId>conllio</artifactId>
+    <version>0.1.0</version>
+</dependency>
+```
+
+
 ## License
 
 This software is released under the terms of the 
