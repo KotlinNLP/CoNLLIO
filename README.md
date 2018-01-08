@@ -7,7 +7,9 @@ It is possible to read the CoNLL-X data format used in the CoNLL 2006 Shared Tas
 CoNLLIO is part of [KotlinNLP](http://kotlinnlp.com/ "KotlinNLP").
 
 
-## Import with Maven
+## Getting Started
+
+### Import with Maven
 
 ```xml
 <dependency>
