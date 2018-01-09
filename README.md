@@ -1,4 +1,4 @@
-# CoNLLIO (CoNLL Input Output)
+# CoNLLIO (CoNLL Input Output) [![GitHub version](https://badge.fury.io/gh/KotlinNLP%2Fconllio.svg)](https://badge.fury.io/gh/KotlinNLP%2Fconllio) [![Build Status](https://travis-ci.org/KotlinNLP/CoNLLIO.svg?branch=master)](https://travis-ci.org/KotlinNLP/CoNLLIO)
 
 CoNLLIO is a Kotlin library designed to read CoNLL-style data format, turning them into a list of Sentences and Tokens.
 
