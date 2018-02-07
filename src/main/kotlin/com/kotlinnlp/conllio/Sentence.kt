@@ -26,9 +26,17 @@ class Sentence(
   init { require(this.tokens.isNotEmpty()) { "A Sentence requires at least one Token." } }
 
   /**
-   * Exception in case of invalid tree.
+   * Exception raised in case of invalid tree.
+   *
+   * @param linesRange the range of the invalid lines
+   * @param message the error message
    */
-  class InvalidTree(message: String?) : Throwable(message)
+  class InvalidTree(
+    linesRange: IntRange,
+    message: String
+  ) : RuntimeException(
+    "[Invalid CoNLL Sentence (lines %d .. %d)] %d.".format(linesRange.start, linesRange.endInclusive, message)
+  )
 
   /**
    * A range defined by the first token line and the last token line in the CoNLL corpus.
@@ -70,13 +78,17 @@ class Sentence(
    * Check if the sentence has a valid tree structure and raises an exception otherwise
    *
    * @param requireSingleRoot check if the tree has one single root
+   *
+   * @throws InvalidTree if the tree of this sentence is not a directed acyclic graph or there are multiple roots
    */
   fun assertValidCoNLLTree(requireSingleRoot: Boolean = true) {
+
     if (!this.heads.isTree()) {
-      throw InvalidTree("Invalid CoNLL: Not a Tree: Lines ${corpusLinesRange.start} .. ${corpusLinesRange.endInclusive}")
+      throw InvalidTree(linesRange = this.corpusLinesRange, message = "Not a Tree")
     }
+
     if (requireSingleRoot && !this.heads.isSingleRoot()) {
-      throw InvalidTree("Invalid CoNLL: Multiple Roots: Lines ${corpusLinesRange.start} .. ${corpusLinesRange.endInclusive}")
+      throw InvalidTree(linesRange = this.corpusLinesRange, message = "Multiple Roots")
     }
   }
 
