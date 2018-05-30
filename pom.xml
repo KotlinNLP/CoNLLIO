@@ -57,9 +57,9 @@
         <nexus-staging-plugin.version>1.6.7</nexus-staging-plugin.version>
         <maven-source-plugin.version>3.0.0</maven-source-plugin.version>
         <maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
-        <kotlin.version>1.1.60</kotlin.version>
+        <kotlin.version>1.2.41</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-        <spek.version>1.1.4</spek.version>
+        <spek.version>1.1.5</spek.version>
         <dokka.version>0.9.13</dokka.version>
         <moshi.version>1.5.0</moshi.version>
     </properties>
