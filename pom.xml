@@ -60,7 +60,7 @@
         <kotlin.version>1.2.41</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <spek.version>1.1.5</spek.version>
-        <dokka.version>0.9.13</dokka.version>
+        <dokka.version>0.9.16</dokka.version>
         <moshi.version>1.5.0</moshi.version>
     </properties>
 
