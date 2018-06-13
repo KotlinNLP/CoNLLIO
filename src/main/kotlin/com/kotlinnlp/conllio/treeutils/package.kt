@@ -7,8 +7,6 @@
 
 package com.kotlinnlp.conllio.treeutils
 
-import kotlin.coroutines.experimental.buildSequence
-
 /**
  * This package contains convenient methods to navigate a tree.
  *
@@ -21,23 +19,23 @@ import kotlin.coroutines.experimental.buildSequence
  *
  * @returns all words going from the id-node up the path to the root
  */
-fun Array<Int?>.getAncestors(id: Int) = buildSequence<Int> {
+fun Array<Int?>.getAncestors(id: Int): List<Int> {
 
-  val array: Array<Int?> = this@getAncestors
-
+  val ancestors = mutableListOf<Int>()
   var head: Int? = id
   var i = 0
 
-  while (array[head!!] != head && i < array.size) {
-    head = array[head]
+  while (this[head!!] != head && i++ < this.size) {
 
-    if (head == null) {
+    head = this[head]
+
+    if (head == null)
       break
-    } else {
-      yield(head)
-    }
-     i += 1
+    else
+      ancestors.add(head)
   }
+
+  return ancestors
 }
 
 /**

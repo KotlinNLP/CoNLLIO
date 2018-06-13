@@ -6,6 +6,7 @@
  * ------------------------------------------------------------------*/
 
 import com.kotlinnlp.conllio.CoNLLReader
+import com.kotlinnlp.conllio.Sentence
 import java.io.File
 
 /**
@@ -21,21 +22,28 @@ fun main(args : Array<String>) {
 
     println("Reading $it ...")
 
-    val sentences = CoNLLReader.fromFile(file = it)
-
-    val sentenceCount: Int = sentences.toList().size
+    var firstSentence: Sentence? = null
+    var sentenceCount = 0
     var nonProjectiveCount = 0
     var annotatedSentencesCount = 0
 
-    sentences.filter { it.hasAnnotatedHeads() }.forEach {
-      it.assertValidCoNLLTree() // raise exception in case of invalid tree
+    CoNLLReader.forEachSentence(file = it) {
 
-      annotatedSentencesCount++
-      if (it.isNonProjective()) nonProjectiveCount++
+      sentenceCount++
+
+      if (firstSentence == null) firstSentence = it
+
+      if (it.hasAnnotatedHeads()) {
+
+        it.assertValidCoNLLTree() // raise exception in case of invalid tree
+
+        annotatedSentencesCount++
+        if (it.isNonProjective()) nonProjectiveCount++
+      }
     }
 
-    println("  sentences: $sentenceCount with-heads: $annotatedSentencesCount non-projective: $nonProjectiveCount\n")
+    println("sentences: $sentenceCount (with-heads: $annotatedSentencesCount non-projective: $nonProjectiveCount)\n")
 
-    println(sentences.first().toCoNLLString(writeComments = true) + '\n')
+    println(firstSentence!!.toCoNLLString(writeComments = true) + '\n')
   }
 }

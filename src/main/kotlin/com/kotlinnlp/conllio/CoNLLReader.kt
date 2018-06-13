@@ -8,7 +8,6 @@
 package com.kotlinnlp.conllio
 
 import java.io.File
-import kotlin.coroutines.experimental.buildSequence
 
 /**
  * The CoNLLReader is designed to read CoNLL-style data format, turning them into a list of [Sentence]s.
@@ -24,36 +23,20 @@ import kotlin.coroutines.experimental.buildSequence
 object CoNLLReader {
 
   /**
+   * Iterate over the [Sentence]s of a given file in CoNLL format.
    *
-   * @param filePath
-   *
-   * @return sequence of [Sentence]s
+   * @param file the CoNLL file to read
    */
-  fun fromFile(filePath: String): Sequence<Sentence> {
-
-    val file = File(filePath)
-
-    require(file.exists()) { "File $file not found."}
-
-    return this.fromFile(file)
+  fun forEachSentence(file: File, callback: (Sentence) -> Unit) {
+    this.forEachSentence(file.readText(charset = Charsets.UTF_8)) { callback(it) }
   }
 
   /**
+   * Iterate over the [Sentence]s contained in a string in CoNLL format.
    *
-   * @param file the CoNLL file to read.
-   *
-   * @return sequence of [Sentence]s.
+   * @param text a string containing sentences in CoNLL-style format
    */
-  fun fromFile(file: File): Sequence<Sentence> = this.fromText(file.readText(charset = Charsets.UTF_8))
-
-  /**
-   * Read a text in CoNLL-style format and return a sequence of [Sentence]s.
-   *
-   * @param text in CoNLL-style format.
-   *
-   * @return sequence of [Sentence]s.
-   */
-  fun fromText(text: String) = buildSequence {
+  fun forEachSentence(text: String, callback: (Sentence) -> Unit) {
 
     val lines = text.split('\n')
     val buffer = ArrayList<Pair<Int, String>>()
@@ -66,7 +49,7 @@ object CoNLLReader {
 
         buffer.clear()
 
-        yield(sentence)
+        callback(sentence)
 
       } else {
         buffer.add(Pair(i, line))
