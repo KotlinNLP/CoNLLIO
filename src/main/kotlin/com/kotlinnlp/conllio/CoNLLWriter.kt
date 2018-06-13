@@ -8,23 +8,11 @@
 package com.kotlinnlp.conllio
 
 import java.io.File
-import kotlin.coroutines.experimental.buildSequence
 
 /**
  * The CoNLLWriter.
  */
 object CoNLLWriter {
-
-  /**
-   * Transform a list of [Sentence]s in the CoNLL-style format.
-   *
-   * @param sentences sequence of [Sentence]s.
-   *
-   * @return sequence of sentences represented in CoNLL-U format.
-   */
-  fun toText(sentences: List<Sentence>, writeComments: Boolean) = buildSequence {
-    sentences.forEach { yield(it.toCoNLLString(writeComments = writeComments)) }
-  }
 
   /**
    * Write a list of [Sentence]s in the CoNLL-style format to the file [outputFilePath].
@@ -35,9 +23,9 @@ object CoNLLWriter {
    */
   fun toFile(sentences: List<Sentence>, writeComments: Boolean, outputFilePath: String) {
 
-    File(outputFilePath).printWriter().use { out ->
-      this.toText(sentences, writeComments = writeComments).forEach {
-        out.write("$it\n\n")
+    File(outputFilePath).printWriter().let { out ->
+      sentences.forEach {
+        out.write("%s\n\n".format(it.toCoNLLString(writeComments = writeComments)))
       }
     }
   }
