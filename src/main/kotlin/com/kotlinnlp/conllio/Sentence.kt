@@ -21,9 +21,12 @@ import com.kotlinnlp.conllio.treeutils.isTree
 class Sentence(
   val sentenceId: String,
   val text: String,
-  val tokens: Array<Token>){
+  val tokens: Array<Token>
+) {
 
-  init { require(this.tokens.isNotEmpty()) { "A Sentence requires at least one Token." } }
+  init {
+    require(this.tokens.isNotEmpty()) { "A Sentence requires at least one Token." }
+  }
 
   /**
    * Exception raised in case of invalid tree.
