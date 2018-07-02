@@ -23,7 +23,7 @@ object CoNLLWriter {
    */
   fun toFile(sentences: List<Sentence>, writeComments: Boolean, outputFilePath: String) {
 
-    File(outputFilePath).printWriter().let { out ->
+    File(outputFilePath).printWriter().use { out ->
       sentences.forEach {
         out.write("%s\n\n".format(it.toCoNLLString(writeComments = writeComments)))
       }
