@@ -8,13 +8,13 @@
 package com.kotlinnlp.conllio
 
 /**
- * Extract an attribute-value pair from a String, using a [separator] to separate the attribute from the value.
+ * Extract a key-value pair from a String, using a [separator] to separate the key from the value.
  *
- * @param separator the separator used to separate the attribute from the value, e.g. equals sign (=)
+ * @param separator the separator used to separate the key from the value
  *
- * @return a <attribute, value> Pair
+ * @return a <key, value> pair
  */
-fun String.extractPair(separator: Char): Pair<String, String> {
+internal fun String.extractKeyValue(separator: Char): Pair<String, String> {
   require(this.contains(separator))
   return Pair(this.substringBefore(separator).trim(), this.substringAfter(separator).trim())
 }
@@ -22,4 +22,4 @@ fun String.extractPair(separator: Char): Pair<String, String> {
 /**
  * @return a <Int, Int> Pair
  */
-fun Pair<String, String>.toIntPair() = Pair(this.first.toInt(), this.second.toInt())
+internal fun Pair<String, String>.toIntPair() = Pair(this.first.toInt(), this.second.toInt())

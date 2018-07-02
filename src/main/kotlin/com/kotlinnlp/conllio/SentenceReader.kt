@@ -216,7 +216,7 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
     val (_, body) = this.curLine
 
     if (body.contains("=")) {
-      val (key, value) = body.removePrefix("#").extractPair('=')
+      val (key, value) = body.removePrefix("#").extractKeyValue('=')
       this.sentenceInfo[key] = value
     }
   }
@@ -229,7 +229,7 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
    */
   private fun extractMultiWordRange(str: String): IntRange {
 
-    val (firstTokenId, lastTokenId) = str.extractPair('-').toIntPair()
+    val (firstTokenId, lastTokenId) = str.extractKeyValue('-').toIntPair()
 
     require(firstTokenId < lastTokenId) { "Required first token Id < last token id" }
     require(firstTokenId == this.tokens.size + 1) { "Required consecutive ids."}
@@ -324,7 +324,7 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
     if (feats != Token.emptyFiller) {
       feats
         .split("|")
-        .map { it.extractPair('=') }
+        .map { it.extractKeyValue('=') }
         .forEach { (featureName, featureValue) ->
           require(featuresNamesForm.containsMatchIn(featureName)) { "$featureName is an invalid feature name" }
           require(featureValuesForm.containsMatchIn(featureValue)) { "$featureValue is an invalid feature value" }
