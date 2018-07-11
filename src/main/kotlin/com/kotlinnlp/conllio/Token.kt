@@ -7,6 +7,8 @@
 
 package com.kotlinnlp.conllio
 
+import com.kotlinnlp.linguisticdescription.sentence.token.FormToken
+
 /**
  * The Token.
  *
@@ -23,7 +25,7 @@ package com.kotlinnlp.conllio
  */
 data class Token(
   val id: Int,
-  val form: String,
+  override val form: String,
   val lemma: String,
   val pos: String,
   val pos2: String,
@@ -32,7 +34,7 @@ data class Token(
   val deprel: String,
   val multiWord: MultiWord? = null,
   val lineNumber: Int = 0
-){
+) : FormToken {
 
   /**
    * Exception in case of invalid Token Id.
