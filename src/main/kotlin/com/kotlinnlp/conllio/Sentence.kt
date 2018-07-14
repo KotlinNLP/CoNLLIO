@@ -21,7 +21,7 @@ import com.kotlinnlp.conllio.treeutils.isTree
 class Sentence(
   val sentenceId: String,
   val text: String,
-  val tokens: Array<Token>
+  val tokens: List<Token>
 ) {
 
   init {

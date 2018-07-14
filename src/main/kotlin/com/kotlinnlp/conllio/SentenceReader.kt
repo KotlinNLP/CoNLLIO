@@ -135,7 +135,7 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
     return Sentence(
       sentenceId = this.sentenceInfo.getOrDefault("sent_id", ""),
       text = this.sentenceInfo.getOrDefault("text", ""),
-      tokens = this.tokens.toTypedArray())
+      tokens = this.tokens)
   }
 
   /**
