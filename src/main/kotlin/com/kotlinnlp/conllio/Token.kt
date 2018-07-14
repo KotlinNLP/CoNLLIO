@@ -19,6 +19,7 @@ import com.kotlinnlp.linguisticdescription.sentence.token.FormToken
  * @property pos2 a more detailed part-of-speech tag (XPOSTAG in CoNLL-U)
  * @property feats a list of morphological features (they could also be syntactic or semantic)
  * @property head the Head of the current word, which is either a value of ID or zero (0).
+ *                It can be null if not annotated.
  * @property deprel the dependency relation to the HEAD
  * @property multiWord the multi-word token information in case of multi-word tokens
  * @property lineNumber the line number of the [Token] in the tree-bank
