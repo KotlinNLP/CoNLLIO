@@ -100,10 +100,20 @@ data class Token(
    * Perform basic properties check (positive id, head > 0 if not null, form and pos not empty).
    */
   init {
-    if (this.id < 1) throw InvalidTokenId("Line ${this.lineNumber}")
-    if (this.head != null && (this.head < 0 || this.head == this.id)) throw InvalidTokenHead("Line ${this.lineNumber}")
-    if (this.form.trim().isEmpty()) throw InvalidTokenForm("Line ${this.lineNumber}")
-    if (this.pos.trim().isEmpty()) throw InvalidTokenPOS("Line ${this.lineNumber}")
+
+    if (this.id < 1)
+      throw InvalidTokenId("[Line ${this.lineNumber}] Negative ID")
+
+    if (this.head != null) {
+      if (this.head < 0) throw InvalidTokenHead("[Line ${this.lineNumber}] Negative head")
+      if (this.head == this.id) throw InvalidTokenHead("[Line ${this.lineNumber}] Head equal to the token ID")
+    }
+
+    if (this.form.trim().isEmpty())
+      throw InvalidTokenForm("[Line ${this.lineNumber}] Empty form")
+
+    if (this.pos.trim().isEmpty())
+      throw InvalidTokenPOS("[Line ${this.lineNumber}] Empty POS")
   }
 
   /**
