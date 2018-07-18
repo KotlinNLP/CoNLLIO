@@ -10,6 +10,8 @@ package com.kotlinnlp.conllio
 import com.kotlinnlp.conllio.treeutils.isNonProjectiveTree
 import com.kotlinnlp.conllio.treeutils.isSingleRoot
 import com.kotlinnlp.conllio.treeutils.isTree
+import com.kotlinnlp.linguisticdescription.sentence.Sentence
+import com.kotlinnlp.linguisticdescription.sentence.token.FormToken
 
 /**
  * The Sentence.
@@ -21,8 +23,8 @@ import com.kotlinnlp.conllio.treeutils.isTree
 data class Sentence(
   val sentenceId: String,
   val text: String,
-  val tokens: List<Token>
-) {
+  override val tokens: List<Token>
+) : Sentence<FormToken> {
 
   init {
     require(this.tokens.isNotEmpty()) { "A Sentence requires at least one Token." }
