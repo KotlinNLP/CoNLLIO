@@ -295,9 +295,14 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
   private fun addToken(token: Token) {
 
     if (this.tokens.isEmpty()) {
-      if (token.id != 1) throw Token.InvalidTokenId("The first token at line ${token.lineNumber} must have id=1")
-    } else if (tokens.last().id != token.id - 1) {
-      throw Token.InvalidTokenId("Not consecutive Id at line ${token.lineNumber}")
+
+      if (token.id != 1)
+        throw Token.InvalidTokenId("[Line ${token.lineNumber}] The first token of the sentence must have ID 1")
+
+    } else {
+
+      if (this.tokens.last().id != token.id - 1)
+        throw Token.InvalidTokenId("[Line ${token.lineNumber}] Not incremental IDs")
     }
 
     this.tokens.add(token)
