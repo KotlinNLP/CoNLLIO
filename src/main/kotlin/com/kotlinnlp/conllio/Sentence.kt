@@ -18,7 +18,7 @@ import com.kotlinnlp.conllio.treeutils.isTree
  * @property text the original (pre-tokenization) text (can be "")
  * @property tokens an array of [Token] (cannot be empty)
  */
-class Sentence(
+data class Sentence(
   val sentenceId: String,
   val text: String,
   val tokens: List<Token>
