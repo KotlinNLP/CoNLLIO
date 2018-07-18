@@ -12,9 +12,9 @@ import com.kotlinnlp.linguisticdescription.sentence.token.FormToken
 /**
  * The Token.
  *
- * @property id the token/word index, integer starting at 1 for each new sentence.
- * @property form the token/word form or punctuation symbol.
- * @property lemma the lemma or stem of word form.
+ * @property id the token id, an incremental integer starting from 1 within a sentence
+ * @property form the token/word form or punctuation symbol
+ * @property lemma the lemma or stem of word form
  * @property pos the part-of-speech tag (UPOSTAG in CoNLL-U)
  * @property pos2 a more detailed part-of-speech tag (XPOSTAG in CoNLL-U)
  * @property feats a list of morphological features (they could also be syntactic or semantic)
