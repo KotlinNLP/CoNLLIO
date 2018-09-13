@@ -45,17 +45,17 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
     /**
      * @return true if the string is a multi-word tokens line
      */
-    fun String.isMultiWordTokensLine(): Boolean = CoNLLSentenceReader@lineStartWithTokensRange.containsMatchIn(this)
+    fun String.isMultiWordTokensLine(): Boolean = lineStartWithTokensRange.containsMatchIn(this)
 
     /**
      * @return true if the string is an empty node line
      */
-    fun String.isEmptyNodeLine(): Boolean = CoNLLSentenceReader@lineStartWithEmptyNodeId.containsMatchIn(this)
+    fun String.isEmptyNodeLine(): Boolean = lineStartWithEmptyNodeId.containsMatchIn(this)
 
     /**
      * @return true if the string is a token line
      */
-    fun String.isTokenLine(): Boolean = CoNLLSentenceReader@lineStartWithTokenId.containsMatchIn(this)
+    fun String.isTokenLine(): Boolean = lineStartWithTokenId.containsMatchIn(this)
 
     /**
      * @return true if the string is a comment line
@@ -105,28 +105,16 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
 
     this.reset()
 
-    while (this.lineIndex < this.lines.size){
+    while (this.lineIndex < this.lines.size) {
 
       val (_, body) = this.curLine
 
-      if (body.isCommentLine() && this.tokens.isEmpty()){
-
-        this.readComment()
-
-      } else if (body.isMultiWordTokensLine()){
-
-        this.readMultiWordTokens()
-
-      } else if (body.isTokenLine()) {
-
-        this.readSingleToken()
-
-      } else if (body.isEmptyNodeLine()) {
-
-        this.readEmptyNode()
-
-      } else {
-        throw InvalidLine("Invalid line $lineIndex")
+      when {
+        body.isCommentLine() && this.tokens.isEmpty() -> this.readComment()
+        body.isMultiWordTokensLine() -> this.readMultiWordTokens()
+        body.isTokenLine() -> this.readSingleToken()
+        body.isEmptyNodeLine() -> this.readEmptyNode()
+        else -> throw InvalidLine("Invalid line $lineIndex")
       }
 
       this.lineIndex++
@@ -200,7 +188,7 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
   /**
    * Reset the [SentenceReader]
    */
-  private fun reset(){
+  private fun reset() {
     this.lineIndex = 0
     this.tokens.clear()
     this.sentenceInfo.clear()
@@ -211,7 +199,7 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
    *
    * TODO: support not key-value comments
    */
-  private fun readComment(){
+  private fun readComment() {
 
     val (_, body) = this.curLine
 
@@ -311,7 +299,7 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
   /**
    * Read an Empty Node (ellipsis, traces, ..)
    */
-  private fun readEmptyNode(){
+  private fun readEmptyNode() {
     // TODO: not yet implemented
   }
 
