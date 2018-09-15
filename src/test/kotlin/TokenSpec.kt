@@ -10,8 +10,8 @@ import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import kotlin.test.assertTrue
 
 /**
  * TokenSpec Tests Class.
@@ -26,13 +26,13 @@ object TokenSpec : Spek({
         assertFailsWith<Token.InvalidTokenId> {
           Token(
             id = 0,
-            form = "_",
-            lemma = "_",
-            pos = "_",
-            pos2 = "_",
+            form = Token.emptyFiller,
+            lemma = Token.emptyFiller,
+            pos = Token.emptyFiller,
+            pos2 = Token.emptyFiller,
             feats = mapOf(),
             head = 0,
-            deprel = "_",
+            deprel = Token.emptyFiller,
             lineNumber = 0)
         }
       }
@@ -41,13 +41,13 @@ object TokenSpec : Spek({
         assertFailsWith<Token.InvalidTokenHead> {
           Token(
             id = 1,
-            form = "_",
-            lemma = "_",
-            pos = "_",
-            pos2 = "_",
+            form = Token.emptyFiller,
+            lemma = Token.emptyFiller,
+            pos = Token.emptyFiller,
+            pos2 = Token.emptyFiller,
             feats = mapOf(),
             head = -1,
-            deprel = "_",
+            deprel = Token.emptyFiller,
             lineNumber = 0)
         }
       }
@@ -56,13 +56,13 @@ object TokenSpec : Spek({
         assertFailsWith<Token.InvalidTokenHead> {
           Token(
             id = 1,
-            form = "_",
-            lemma = "_",
-            pos = "_",
-            pos2 = "_",
+            form = Token.emptyFiller,
+            lemma = Token.emptyFiller,
+            pos = Token.emptyFiller,
+            pos2 = Token.emptyFiller,
             feats = mapOf(),
             head = 1,
-            deprel = "_",
+            deprel = Token.emptyFiller,
             lineNumber = 0)
         }
       }
@@ -72,12 +72,12 @@ object TokenSpec : Spek({
           Token(
             id = 1,
             form = "",
-            lemma = "_",
-            pos = "_",
-            pos2 = "_",
+            lemma = Token.emptyFiller,
+            pos = Token.emptyFiller,
+            pos2 = Token.emptyFiller,
             feats = mapOf(),
             head = 0,
-            deprel = "_",
+            deprel = Token.emptyFiller,
             lineNumber = 0)
         }
       }
@@ -86,30 +86,33 @@ object TokenSpec : Spek({
         assertFailsWith<Token.InvalidTokenPOS> {
           Token(
             id = 1,
-            form = "_",
-            lemma = "_",
+            form = Token.emptyFiller,
+            lemma = Token.emptyFiller,
             pos = "",
-            pos2 = "_",
+            pos2 = Token.emptyFiller,
             feats = mapOf(),
             head = 0,
-            deprel = "_",
+            deprel = Token.emptyFiller,
             lineNumber = 0)
         }
       }
     }
 
-    on("toCoNLLString()"){
+    on("toCoNLLString()") {
+
       it("should return the expected CoNLL line") {
-        assertTrue(Token(
-          id = 1,
-          form = "dogs",
-          lemma = "dog",
-          pos = "noun",
-          pos2 = "_",
-          feats = mapOf(),
-          head = 0,
-          deprel = "root",
-          lineNumber = 0).toCoNLLString() == "1\tdogs\tdog\tnoun\t_\t_\t0\troot\t_\t_")
+        assertEquals(
+          "1\tdogs\tdog\tnoun\t_\t_\t0\troot\t_\t_",
+          Token(
+            id = 1,
+            form = "dogs",
+            lemma = "dog",
+            pos = "noun",
+            pos2 = Token.emptyFiller,
+            feats = mapOf(),
+            head = 0,
+            deprel = "root",
+            lineNumber = 0).toCoNLLString())
       }
     }
   }
