@@ -64,7 +64,7 @@ data class Token(
      *
      * Note that no format-level distinction is made for the rare cases where the FORM or LEMMA is the underscore.
      */
-    val emptyFiller = "_"
+    const val emptyFiller = "_"
   }
 
   /**
