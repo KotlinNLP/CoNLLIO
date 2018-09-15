@@ -30,7 +30,7 @@ object TokenSpec : Spek({
             lemma = "_",
             pos = "_",
             pos2 = "_",
-            feats = HashMap<String, String>(),
+            feats = mapOf(),
             head = 0,
             deprel = "_",
             lineNumber = 0)
@@ -45,7 +45,7 @@ object TokenSpec : Spek({
             lemma = "_",
             pos = "_",
             pos2 = "_",
-            feats = HashMap<String, String>(),
+            feats = mapOf(),
             head = -1,
             deprel = "_",
             lineNumber = 0)
@@ -60,7 +60,7 @@ object TokenSpec : Spek({
             lemma = "_",
             pos = "_",
             pos2 = "_",
-            feats = HashMap<String, String>(),
+            feats = mapOf(),
             head = 1,
             deprel = "_",
             lineNumber = 0)
@@ -75,7 +75,7 @@ object TokenSpec : Spek({
             lemma = "_",
             pos = "_",
             pos2 = "_",
-            feats = HashMap<String, String>(),
+            feats = mapOf(),
             head = 0,
             deprel = "_",
             lineNumber = 0)
@@ -90,7 +90,7 @@ object TokenSpec : Spek({
             lemma = "_",
             pos = "",
             pos2 = "_",
-            feats = HashMap<String, String>(),
+            feats = mapOf(),
             head = 0,
             deprel = "_",
             lineNumber = 0)
@@ -106,7 +106,7 @@ object TokenSpec : Spek({
           lemma = "dog",
           pos = "noun",
           pos2 = "_",
-          feats = HashMap<String, String>(),
+          feats = mapOf(),
           head = 0,
           deprel = "root",
           lineNumber = 0).toCoNLLString() == "1\tdogs\tdog\tnoun\t_\t_\t0\troot\t_\t_")
