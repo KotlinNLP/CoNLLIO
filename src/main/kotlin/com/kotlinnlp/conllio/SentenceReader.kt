@@ -7,6 +7,9 @@
 
 package com.kotlinnlp.conllio
 
+import com.kotlinnlp.linguisticdescription.Deprel
+import com.kotlinnlp.linguisticdescription.POSTag
+
 /**
  * The SentenceReader.
  *
@@ -158,32 +161,47 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
    *
    * @return a new Token
    */
-  private fun buildToken(
-    i: Int,
-    body: String,
-    multiWord: MultiWord? = null): Token {
+  private fun buildToken(i: Int, body: String, multiWord: MultiWord? = null): Token {
 
-    val fields = body.split('\t')
+    val fields: List<String> = body.split('\t')
 
     require(fields.size == 10) { "Invalid content at line $i:\n$body" }
 
-    require(fields.slice(3 until 10).none{ it.contains(" ") }) {
+    require(fields.slice(3 until 10).none { it.contains(" ") }) {
       "Fields other than FORM and LEMMA must not contain space characters.\nLine $i: $body\n"
     }
 
+    val id: Int = fields[0].toInt()
+    val head: Int? = if (fields[6] == Token.emptyFiller) null else fields[6].toInt()
+
     return Token(
-      id = fields[0].toInt(),
+      id = id,
       form = fields[1].trim(),
       lemma = fields[2].trim(),
-      pos = fields[3].trim(),
-      pos2 = fields[4].trim(),
+      pos = POSTag(labels = fields[3].split('+')),
+      pos2 = POSTag(labels = fields[4].split('+')),
       feats = this.extractFeatures(fields[5]),
-      head = if (fields[6] == Token.emptyFiller) null else fields[6].toInt(),
-      deprel = fields[7],
+      head = head,
+      deprel = this.buildDeprel(annotation = fields[7], id = id, head = head),
       multiWord = multiWord,
       lineNumber = i
     )
   }
+
+  /**
+   * @param annotation the deprel annotation string
+   * @param id the id of the token
+   * @param head the head of the token
+   *
+   * @return the deprel of the token
+   */
+  private fun buildDeprel(annotation: String, id: Int, head: Int?): Deprel = Deprel(
+    labels = annotation.split("+"),
+    direction = when {
+      head == null -> Deprel.Direction.ROOT
+      head > id -> Deprel.Direction.LEFT // the id follows the incremental order of the CoNLL sentence tokens
+      else -> Deprel.Direction.RIGHT
+    })
 
   /**
    * Reset the [SentenceReader]

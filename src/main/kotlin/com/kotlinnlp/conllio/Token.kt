@@ -7,6 +7,8 @@
 
 package com.kotlinnlp.conllio
 
+import com.kotlinnlp.linguisticdescription.Deprel
+import com.kotlinnlp.linguisticdescription.POSTag
 import com.kotlinnlp.linguisticdescription.sentence.token.FormToken
 
 /**
@@ -20,7 +22,7 @@ import com.kotlinnlp.linguisticdescription.sentence.token.FormToken
  * @property feats a list of morphological features (they could also be syntactic or semantic)
  * @property head the Head of the current word, which is either a value of ID or zero (0).
  *                It can be null if not annotated.
- * @property deprel the dependency relation to the HEAD
+ * @property deprel the deprel
  * @property multiWord the multi-word token information in case of multi-word tokens
  * @property lineNumber the line number of the [Token] in the tree-bank
  */
@@ -28,11 +30,11 @@ data class Token(
   val id: Int,
   override val form: String,
   val lemma: String,
-  val pos: String,
-  val pos2: String,
+  val pos: POSTag,
+  val pos2: POSTag,
   val feats: Map<String, String>,
   val head: Int?,
-  val deprel: String,
+  val deprel: Deprel,
   val multiWord: MultiWord? = null,
   val lineNumber: Int = 0
 ) : FormToken {
@@ -112,7 +114,7 @@ data class Token(
     if (this.form.trim().isEmpty())
       throw InvalidTokenForm("[Line ${this.lineNumber}] Empty form")
 
-    if (this.pos.trim().isEmpty())
+    if (this.pos.labels.any { it.trim().isEmpty() })
       throw InvalidTokenPOS("[Line ${this.lineNumber}] Empty POS")
   }
 

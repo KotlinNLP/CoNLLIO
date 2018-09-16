@@ -6,6 +6,8 @@
  * ------------------------------------------------------------------*/
 
 import com.kotlinnlp.conllio.Token
+import com.kotlinnlp.linguisticdescription.Deprel
+import com.kotlinnlp.linguisticdescription.POSTag
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
@@ -28,11 +30,11 @@ object TokenSpec : Spek({
             id = 0,
             form = Token.emptyFiller,
             lemma = Token.emptyFiller,
-            pos = Token.emptyFiller,
-            pos2 = Token.emptyFiller,
+            pos = POSTag(labels = listOf(Token.emptyFiller)),
+            pos2 = POSTag(labels = listOf(Token.emptyFiller)),
             feats = mapOf(),
             head = 0,
-            deprel = Token.emptyFiller,
+            deprel = Deprel(labels = listOf(Token.emptyFiller)),
             lineNumber = 0)
         }
       }
@@ -43,11 +45,11 @@ object TokenSpec : Spek({
             id = 1,
             form = Token.emptyFiller,
             lemma = Token.emptyFiller,
-            pos = Token.emptyFiller,
-            pos2 = Token.emptyFiller,
+            pos = POSTag(labels = listOf(Token.emptyFiller)),
+            pos2 = POSTag(labels = listOf(Token.emptyFiller)),
             feats = mapOf(),
             head = -1,
-            deprel = Token.emptyFiller,
+            deprel = Deprel(labels = listOf(Token.emptyFiller)),
             lineNumber = 0)
         }
       }
@@ -58,11 +60,11 @@ object TokenSpec : Spek({
             id = 1,
             form = Token.emptyFiller,
             lemma = Token.emptyFiller,
-            pos = Token.emptyFiller,
-            pos2 = Token.emptyFiller,
+            pos = POSTag(labels = listOf(Token.emptyFiller)),
+            pos2 = POSTag(labels = listOf(Token.emptyFiller)),
             feats = mapOf(),
             head = 1,
-            deprel = Token.emptyFiller,
+            deprel = Deprel(labels = listOf(Token.emptyFiller)),
             lineNumber = 0)
         }
       }
@@ -73,11 +75,11 @@ object TokenSpec : Spek({
             id = 1,
             form = "",
             lemma = Token.emptyFiller,
-            pos = Token.emptyFiller,
-            pos2 = Token.emptyFiller,
+            pos = POSTag(labels = listOf(Token.emptyFiller)),
+            pos2 = POSTag(labels = listOf(Token.emptyFiller)),
             feats = mapOf(),
             head = 0,
-            deprel = Token.emptyFiller,
+            deprel = Deprel(labels = listOf(Token.emptyFiller)),
             lineNumber = 0)
         }
       }
@@ -88,11 +90,11 @@ object TokenSpec : Spek({
             id = 1,
             form = Token.emptyFiller,
             lemma = Token.emptyFiller,
-            pos = "",
-            pos2 = Token.emptyFiller,
+            pos = POSTag(labels = listOf("")),
+            pos2 = POSTag(labels = listOf(Token.emptyFiller)),
             feats = mapOf(),
             head = 0,
-            deprel = Token.emptyFiller,
+            deprel = Deprel(labels = listOf(Token.emptyFiller)),
             lineNumber = 0)
         }
       }
@@ -107,11 +109,11 @@ object TokenSpec : Spek({
             id = 1,
             form = "dogs",
             lemma = "dog",
-            pos = "noun",
-            pos2 = Token.emptyFiller,
+            pos = POSTag(labels = listOf("noun")),
+            pos2 = POSTag(labels = listOf(Token.emptyFiller)),
             feats = mapOf(),
             head = 0,
-            deprel = "root",
+            deprel = Deprel(labels = listOf("root")),
             lineNumber = 0).toCoNLLString())
       }
     }
