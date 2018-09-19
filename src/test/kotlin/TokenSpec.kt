@@ -6,8 +6,8 @@
  * ------------------------------------------------------------------*/
 
 import com.kotlinnlp.conllio.Token
-import com.kotlinnlp.linguisticdescription.Deprel
 import com.kotlinnlp.linguisticdescription.POSTag
+import com.kotlinnlp.linguisticdescription.syntax.SyntacticDependency
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
@@ -28,13 +28,13 @@ object TokenSpec : Spek({
         assertFailsWith<Token.InvalidTokenId> {
           Token(
             id = 0,
-            form = Token.emptyFiller,
-            lemma = Token.emptyFiller,
-            pos = POSTag(labels = listOf(Token.emptyFiller)),
-            pos2 = POSTag(labels = listOf(Token.emptyFiller)),
+            form = Token.EMPTY_FILLER,
+            lemma = Token.EMPTY_FILLER,
+            posList = listOf(POSTag(Token.EMPTY_FILLER)),
+            pos2List = listOf(POSTag(Token.EMPTY_FILLER)),
             feats = mapOf(),
             head = 0,
-            deprel = Deprel(labels = listOf(Token.emptyFiller)),
+            syntacticDependencies = listOf(SyntacticDependency(Token.EMPTY_FILLER)),
             lineNumber = 0)
         }
       }
@@ -43,13 +43,13 @@ object TokenSpec : Spek({
         assertFailsWith<Token.InvalidTokenHead> {
           Token(
             id = 1,
-            form = Token.emptyFiller,
-            lemma = Token.emptyFiller,
-            pos = POSTag(labels = listOf(Token.emptyFiller)),
-            pos2 = POSTag(labels = listOf(Token.emptyFiller)),
+            form = Token.EMPTY_FILLER,
+            lemma = Token.EMPTY_FILLER,
+            posList = listOf(POSTag(Token.EMPTY_FILLER)),
+            pos2List = listOf(POSTag(Token.EMPTY_FILLER)),
             feats = mapOf(),
             head = -1,
-            deprel = Deprel(labels = listOf(Token.emptyFiller)),
+            syntacticDependencies = listOf(SyntacticDependency(Token.EMPTY_FILLER)),
             lineNumber = 0)
         }
       }
@@ -58,13 +58,13 @@ object TokenSpec : Spek({
         assertFailsWith<Token.InvalidTokenHead> {
           Token(
             id = 1,
-            form = Token.emptyFiller,
-            lemma = Token.emptyFiller,
-            pos = POSTag(labels = listOf(Token.emptyFiller)),
-            pos2 = POSTag(labels = listOf(Token.emptyFiller)),
+            form = Token.EMPTY_FILLER,
+            lemma = Token.EMPTY_FILLER,
+            posList = listOf(POSTag(Token.EMPTY_FILLER)),
+            pos2List = listOf(POSTag(Token.EMPTY_FILLER)),
             feats = mapOf(),
             head = 1,
-            deprel = Deprel(labels = listOf(Token.emptyFiller)),
+            syntacticDependencies = listOf(SyntacticDependency(Token.EMPTY_FILLER)),
             lineNumber = 0)
         }
       }
@@ -74,12 +74,12 @@ object TokenSpec : Spek({
           Token(
             id = 1,
             form = "",
-            lemma = Token.emptyFiller,
-            pos = POSTag(labels = listOf(Token.emptyFiller)),
-            pos2 = POSTag(labels = listOf(Token.emptyFiller)),
+            lemma = Token.EMPTY_FILLER,
+            posList = listOf(POSTag(Token.EMPTY_FILLER)),
+            pos2List = listOf(POSTag(Token.EMPTY_FILLER)),
             feats = mapOf(),
             head = 0,
-            deprel = Deprel(labels = listOf(Token.emptyFiller)),
+            syntacticDependencies = listOf(SyntacticDependency(Token.EMPTY_FILLER)),
             lineNumber = 0)
         }
       }
@@ -88,13 +88,13 @@ object TokenSpec : Spek({
         assertFailsWith<Token.InvalidTokenPOS> {
           Token(
             id = 1,
-            form = Token.emptyFiller,
-            lemma = Token.emptyFiller,
-            pos = POSTag(labels = listOf("")),
-            pos2 = POSTag(labels = listOf(Token.emptyFiller)),
+            form = Token.EMPTY_FILLER,
+            lemma = Token.EMPTY_FILLER,
+            posList = listOf(POSTag("")),
+            pos2List = listOf(POSTag(Token.EMPTY_FILLER)),
             feats = mapOf(),
             head = 0,
-            deprel = Deprel(labels = listOf(Token.emptyFiller)),
+            syntacticDependencies = listOf(SyntacticDependency(Token.EMPTY_FILLER)),
             lineNumber = 0)
         }
       }
@@ -109,11 +109,11 @@ object TokenSpec : Spek({
             id = 1,
             form = "dogs",
             lemma = "dog",
-            pos = POSTag(labels = listOf("noun")),
-            pos2 = POSTag(labels = listOf(Token.emptyFiller)),
+            posList = listOf(POSTag("noun")),
+            pos2List = listOf(POSTag(Token.EMPTY_FILLER)),
             feats = mapOf(),
             head = 0,
-            deprel = Deprel(labels = listOf("root")),
+            syntacticDependencies = listOf(SyntacticDependency("root")),
             lineNumber = 0).toCoNLLString())
       }
     }

@@ -7,8 +7,8 @@
 
 import com.kotlinnlp.conllio.SentenceReader
 import com.kotlinnlp.conllio.Token
-import com.kotlinnlp.linguisticdescription.Deprel
 import com.kotlinnlp.linguisticdescription.POSTag
+import com.kotlinnlp.linguisticdescription.syntax.SyntacticDependency
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
@@ -34,11 +34,11 @@ class SentenceReaderSpec: Spek({
               id = 1,
               form = "the",
               lemma = "the",
-              pos = POSTag(labels = listOf("det")),
-              pos2 = POSTag(labels = listOf("_")),
+              posList = listOf(POSTag("det")),
+              pos2List = listOf(POSTag("_")),
               feats = mapOf(),
               head = 2,
-              deprel = Deprel(labels = listOf("det")),
+              syntacticDependencies = listOf(SyntacticDependency("det")),
               lineNumber = 0))
       }
 
@@ -49,11 +49,11 @@ class SentenceReaderSpec: Spek({
             id = 2,
             form = "dogs",
             lemma = "dog",
-            pos = POSTag(labels = listOf("noun")),
-            pos2 = POSTag(labels =listOf("_")),
+            posList = listOf(POSTag("noun")),
+            pos2List = listOf(POSTag("_")),
             feats = mapOf(),
             head = 0,
-            deprel = Deprel(labels = listOf("root")),
+            syntacticDependencies = listOf(SyntacticDependency("root")),
             lineNumber = 1))
       }
     }

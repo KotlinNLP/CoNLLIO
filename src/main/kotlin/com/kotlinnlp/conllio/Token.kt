@@ -7,9 +7,9 @@
 
 package com.kotlinnlp.conllio
 
-import com.kotlinnlp.linguisticdescription.Deprel
 import com.kotlinnlp.linguisticdescription.POSTag
 import com.kotlinnlp.linguisticdescription.sentence.token.FormToken
+import com.kotlinnlp.linguisticdescription.syntax.SyntacticDependency
 
 /**
  * The Token.
@@ -17,12 +17,12 @@ import com.kotlinnlp.linguisticdescription.sentence.token.FormToken
  * @property id the token id, an incremental integer starting from 1 within a sentence
  * @property form the token/word form or punctuation symbol
  * @property lemma the lemma or stem of word form
- * @property pos the part-of-speech tag (UPOSTAG in CoNLL-U)
- * @property pos2 a more detailed part-of-speech tag (XPOSTAG in CoNLL-U)
+ * @property posList a list of part-of-speech tags (UPOSTAG in CoNLL-U) (more for composite tokens)
+ * @property pos2List a list of more detailed part-of-speech tags (XPOSTAG in CoNLL-U) (more for composite tokens)
  * @property feats a list of morphological features (they could also be syntactic or semantic)
  * @property head the Head of the current word, which is either a value of ID or zero (0).
  *                It can be null if not annotated.
- * @property deprel the deprel
+ * @property syntacticDependencies a list of syntactic dependencies (more for composite tokens)
  * @property multiWord the multi-word token information in case of multi-word tokens
  * @property lineNumber the line number of the [Token] in the tree-bank
  */
@@ -30,11 +30,11 @@ data class Token(
   val id: Int,
   override val form: String,
   val lemma: String,
-  val pos: POSTag,
-  val pos2: POSTag,
+  val posList: List<POSTag>,
+  val pos2List: List<POSTag>,
   val feats: Map<String, String>,
   val head: Int?,
-  val deprel: Deprel,
+  val syntacticDependencies: List<SyntacticDependency>,
   val multiWord: MultiWord? = null,
   val lineNumber: Int = 0
 ) : FormToken {
@@ -66,7 +66,25 @@ data class Token(
      *
      * Note that no format-level distinction is made for the rare cases where the FORM or LEMMA is the underscore.
      */
-    const val emptyFiller = "_"
+    const val EMPTY_FILLER = "_"
+
+    /**
+     * The string used to separate an annotation with more components.
+     */
+    internal const val COMPONENTS_SEP = "+"
+  }
+
+  /**
+   * Check POS and dependencies size.
+   */
+  init {
+
+    val lists: List<List<*>> = listOf(this.posList, this.pos2List, this.syntacticDependencies)
+    val maxListSize: Int = lists.maxBy { it.size }!!.size
+
+    require(lists.all { it.size == maxListSize || it.single().toString() == EMPTY_FILLER }) {
+      "POS and Dependencies lists must be empty or have compatible sizes."
+    }
   }
 
   /**
@@ -90,7 +108,7 @@ data class Token(
       listOf(
         this.multiWord.getCoNLLRange(),
         this.multiWord.form,
-        (emptyFiller + "\t").repeat(8).trim('\t') // remove last tab
+        (EMPTY_FILLER + "\t").repeat(8).trim('\t') // remove last tab
       ).joinToString("\t")
 
     } else {
@@ -114,7 +132,7 @@ data class Token(
     if (this.form.trim().isEmpty())
       throw InvalidTokenForm("[Line ${this.lineNumber}] Empty form")
 
-    if (this.pos.labels.any { it.trim().isEmpty() })
+    if (this.posList.any { it.type.toString().trim().isEmpty() })
       throw InvalidTokenPOS("[Line ${this.lineNumber}] Empty POS")
   }
 
@@ -130,21 +148,19 @@ data class Token(
       this.id.toString(),
       this.form,
       this.lemma,
-      this.pos,
-      this.pos2,
+      this.posList.joinToString(COMPONENTS_SEP),
+      this.pos2List.joinToString(COMPONENTS_SEP),
       this.featsToCoNLL(),
-      this.head?.toString() ?: emptyFiller,
-      this.deprel,
-      emptyFiller,
-      emptyFiller).joinToString("\t")
+      this.head?.toString() ?: EMPTY_FILLER,
+      this.syntacticDependencies.joinToString(COMPONENTS_SEP),
+      EMPTY_FILLER,
+      EMPTY_FILLER
+    ).joinToString("\t")
   }
 
   /**
    * @return the CoNLL string representation of the features of this token
    */
-  private fun featsToCoNLL() = if (this.feats.isEmpty()) {
-    emptyFiller
-  } else {
-    this.feats.map { "${it.key}=${it.value}" }.joinToString("|")
-  }
+  private fun featsToCoNLL(): String =
+    if (this.feats.isNotEmpty()) this.feats.map { "${it.key}=${it.value}" }.joinToString("|") else EMPTY_FILLER
 }

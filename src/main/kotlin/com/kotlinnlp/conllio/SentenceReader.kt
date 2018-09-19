@@ -7,8 +7,8 @@
 
 package com.kotlinnlp.conllio
 
-import com.kotlinnlp.linguisticdescription.Deprel
 import com.kotlinnlp.linguisticdescription.POSTag
+import com.kotlinnlp.linguisticdescription.syntax.SyntacticDependency
 
 /**
  * The SentenceReader.
@@ -172,36 +172,39 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
     }
 
     val id: Int = fields[0].toInt()
-    val head: Int? = if (fields[6] == Token.emptyFiller) null else fields[6].toInt()
+    val head: Int? = if (fields[6] == Token.EMPTY_FILLER) null else fields[6].toInt()
+    val direction: SyntacticDependency.Direction = this.buildDirection(id = id, head = head)
 
     return Token(
       id = id,
       form = fields[1].trim(),
       lemma = fields[2].trim(),
-      pos = POSTag(labels = fields[3].split('+')),
-      pos2 = POSTag(labels = fields[4].split('+')),
+      posList = fields[3].split(Token.COMPONENTS_SEP).map { POSTag(it) },
+      pos2List = fields[4].split(Token.COMPONENTS_SEP).map { POSTag(it) },
       feats = this.extractFeatures(fields[5]),
       head = head,
-      deprel = this.buildDeprel(annotation = fields[7], id = id, head = head),
+      syntacticDependencies = fields[7].split(Token.COMPONENTS_SEP).map {
+        SyntacticDependency(annotation = it, direction = direction)
+      },
       multiWord = multiWord,
       lineNumber = i
     )
   }
 
   /**
-   * @param annotation the deprel annotation string
+   * Build the syntactic dependency direction of a token.
+   * Note: the ID follows the incremental order of the CoNLL sentence tokens.
+   *
    * @param id the id of the token
    * @param head the head of the token
    *
-   * @return the deprel of the token
+   * @return the syntactic dependency direction of the token
    */
-  private fun buildDeprel(annotation: String, id: Int, head: Int?): Deprel = Deprel(
-    labels = annotation.split("+"),
-    direction = when {
-      head == null -> Deprel.Direction.ROOT
-      head > id -> Deprel.Direction.LEFT // the id follows the incremental order of the CoNLL sentence tokens
-      else -> Deprel.Direction.RIGHT
-    })
+  private fun buildDirection(id: Int, head: Int?): SyntacticDependency.Direction = when {
+    head == null -> SyntacticDependency.Direction.ROOT
+    head > id -> SyntacticDependency.Direction.LEFT
+    else -> SyntacticDependency.Direction.RIGHT
+  }
 
   /**
    * Reset the [SentenceReader]
@@ -332,7 +335,7 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
 
     val result = mutableMapOf<String, String>()
 
-    if (feats != Token.emptyFiller) {
+    if (feats != Token.EMPTY_FILLER) {
       feats
         .split("|")
         .map { it.extractKeyValue('=') }
