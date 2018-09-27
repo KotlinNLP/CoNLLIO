@@ -201,7 +201,8 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
    * @return the syntactic dependency direction of the token
    */
   private fun buildDirection(id: Int, head: Int?): SyntacticDependency.Direction = when {
-    head == null -> SyntacticDependency.Direction.ROOT
+    head == null -> SyntacticDependency.Direction.NULL
+    head == 0 -> SyntacticDependency.Direction.ROOT
     head > id -> SyntacticDependency.Direction.LEFT
     else -> SyntacticDependency.Direction.RIGHT
   }
