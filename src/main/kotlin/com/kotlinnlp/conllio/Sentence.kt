@@ -40,7 +40,7 @@ data class Sentence(
     linesRange: IntRange,
     message: String
   ) : RuntimeException(
-    "[Invalid CoNLL Sentence (lines %d .. %d)] %d.".format(linesRange.start, linesRange.endInclusive, message)
+    "[Invalid CoNLL Sentence (lines %d .. %d)] %s.".format(linesRange.start, linesRange.endInclusive, message)
   )
 
   /**
