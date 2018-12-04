@@ -12,7 +12,7 @@ import java.io.File
 /**
  * The CoNLLReader is designed to read CoNLL-style data format, turning them into a list of [Sentence]s.
  *
- * It is possible to read the CoNLL-X data format used in the CoNLL 2006 Shared Task and the CoNLL-U data 
+ * It is possible to read the CoNLL-X data format used in the CoNLL 2006 Shared Task and the CoNLL-U data
  * format used in the CoNLL 2017 Shared Task.
  *
  * In a few words, it expects data encoded in plain text files (UTF-8) with three types of lines:
@@ -45,7 +45,11 @@ object CoNLLReader {
 
       if (line.isSentenceBoundary() && buffer.isNotEmpty()) {
 
-        val sentence = SentenceReader(buffer).readSentence()
+        val sentence = try {
+          SentenceReader(buffer).readSentence()
+        } catch (e: SentenceReader.InvalidLine) {
+          throw SentenceReader.InvalidLine(lineIndex = i, line = line)
+        }
 
         buffer.clear()
 

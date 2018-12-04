@@ -68,8 +68,11 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
 
   /**
    * Exception in case of invalid CoNLL line.
+   *
+   * @param lineIndex the index of the invalid line
+   * @param line the string line
    */
-  class InvalidLine(message: String?) : Throwable(message)
+  class InvalidLine(lineIndex: Int, line: String) : Throwable("Invalid line [$lineIndex]: $line")
 
   /**
    * Current index of the line which is being read.
@@ -117,7 +120,7 @@ class SentenceReader(private val lines: ArrayList<Pair<Int, String>>) {
         body.isMultiWordTokensLine() -> this.readMultiWordTokens()
         body.isTokenLine() -> this.readSingleToken()
         body.isEmptyNodeLine() -> this.readEmptyNode()
-        else -> throw InvalidLine("Invalid line $lineIndex")
+        else -> throw InvalidLine(lineIndex = this.lineIndex, line = body)
       }
 
       this.lineIndex++
