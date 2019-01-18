@@ -39,7 +39,9 @@ class SentenceReaderSpec: Spek({
             pos2List = listOf(POSTag("_")),
             feats = mapOf(),
             head = 2,
-            syntacticDependencies = listOf(SyntacticDependency("det")),
+            syntacticDependencies = listOf(
+              SyntacticDependency.String(type = "det", direction = SyntacticDependency.Direction.LEFT)
+            ),
             lineNumber = 0))
       }
 
@@ -55,7 +57,9 @@ class SentenceReaderSpec: Spek({
             pos2List = listOf(POSTag("_")),
             feats = mapOf(),
             head = 0,
-            syntacticDependencies = listOf(SyntacticDependency("root")),
+            syntacticDependencies = listOf(
+              SyntacticDependency.String(type = "root", direction = SyntacticDependency.Direction.ROOT)
+            ),
             lineNumber = 1))
       }
     }
