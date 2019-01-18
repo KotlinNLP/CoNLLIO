@@ -73,7 +73,7 @@ object TreeUtilsSpec : Spek({
       val heads: Array<Int?> = arrayOf(2, 2, null, 2, 6, 6, 2, 8, 2, 8, 11, 8)
 
       it("should return the pre-computed values") {
-        assertTrue(listOf(11, 8, 2) == heads.getAncestors(10))
+        assertEquals(listOf(11, 8, 2), heads.getAncestors(10))
       }
     }
 

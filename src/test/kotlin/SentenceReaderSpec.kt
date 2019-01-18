@@ -13,7 +13,7 @@ import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import kotlin.test.assertTrue
+import kotlin.test.assertEquals
 
 class SentenceReaderSpec: Spek({
 
@@ -29,22 +29,24 @@ class SentenceReaderSpec: Spek({
 
       it("should create the expected tokens at index 0") {
 
-        assertTrue(sentence.tokens[0] ==
-            Token(
-              id = 1,
-              form = "the",
-              lemma = "the",
-              posList = listOf(POSTag("det")),
-              pos2List = listOf(POSTag("_")),
-              feats = mapOf(),
-              head = 2,
-              syntacticDependencies = listOf(SyntacticDependency("det")),
-              lineNumber = 0))
+        assertEquals(
+          sentence.tokens[0],
+          Token(
+            id = 1,
+            form = "the",
+            lemma = "the",
+            posList = listOf(POSTag("det")),
+            pos2List = listOf(POSTag("_")),
+            feats = mapOf(),
+            head = 2,
+            syntacticDependencies = listOf(SyntacticDependency("det")),
+            lineNumber = 0))
       }
 
       it("should create the expected tokens at index 1") {
 
-        assertTrue(sentence.tokens[1] ==
+        assertEquals(
+          sentence.tokens[1],
           Token(
             id = 2,
             form = "dogs",
