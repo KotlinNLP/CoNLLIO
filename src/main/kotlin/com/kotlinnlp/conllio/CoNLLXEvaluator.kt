@@ -17,14 +17,14 @@ import java.nio.file.Paths
 object CoNLLXEvaluator : CorpusEvaluator {
 
   /**
-   * The path of the external script within the resources directory.
+   * The path of the evaluation script in the resources.
    */
-  private val SCRIPT_PATH: String = Paths.get("/", "evaluation_scripts", "perl", "eval.pl").toString()
+  private val SCRIPT_PATH: String = Paths.get(File.separator, "evaluation_scripts", "perl", "eval.pl").toString()
 
   /**
-   * The absolute path of the external script.
+   * The code of the evaluation script.
    */
-  private val SCRIPT_CODE: String = this::class.java.getResource(this.SCRIPT_PATH).readText()
+  private val SCRIPT_CODE: String = this.javaClass.getResourceAsStream(this.SCRIPT_PATH).reader().readText()
 
   /**
    * Evaluate the system output against a gold standard.
