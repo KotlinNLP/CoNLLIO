@@ -9,17 +9,15 @@ import com.kotlinnlp.conllio.SentenceReader
 import com.kotlinnlp.conllio.Token
 import com.kotlinnlp.linguisticdescription.POSTag
 import com.kotlinnlp.linguisticdescription.syntax.SyntacticDependency
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
 class SentenceReaderSpec: Spek({
 
   describe("SentenceReader") {
 
-    on("readSentence()") {
+    context("readSentence()") {
 
       val buffer = ArrayList<Pair<Int, String>>()
       buffer.add(Pair(0, "1\tthe\tthe\tdet\t_\t_\t2\tdet\t_\t_"))

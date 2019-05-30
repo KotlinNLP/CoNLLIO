@@ -8,10 +8,8 @@
 import com.kotlinnlp.conllio.Token
 import com.kotlinnlp.linguisticdescription.POSTag
 import com.kotlinnlp.linguisticdescription.syntax.SyntacticDependency
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
@@ -22,7 +20,7 @@ object TokenSpec : Spek({
 
   describe("Token") {
 
-    on("Constructor") {
+    context("Constructor") {
 
       it("should raise an exception in case the id is 0") {
         assertFailsWith<Token.InvalidTokenId> {
@@ -100,7 +98,7 @@ object TokenSpec : Spek({
       }
     }
 
-    on("toCoNLLString()") {
+    context("toCoNLLString()") {
 
       it("should return the expected CoNLL line") {
         assertEquals(
