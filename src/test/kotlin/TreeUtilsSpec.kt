@@ -6,10 +6,8 @@
  * ------------------------------------------------------------------*/
 
 import com.kotlinnlp.conllio.treeutils.*
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -21,7 +19,7 @@ object TreeUtilsSpec : Spek({
 
   describe("TreeUtils") {
 
-    on("isTree") {
+    context("isTree") {
 
       val heads: Array<Int?> = arrayOf(2, 2, null, 2, 6, 6, 2, 8, 2, 8, 11, 8)
 
@@ -30,7 +28,7 @@ object TreeUtilsSpec : Spek({
       }
     }
 
-    on("isSingleRoot") {
+    context("isSingleRoot") {
 
       val headsSingleRoot: Array<Int?> = arrayOf(2, 2, null, 2, 6, 6, 2, 8, 2, 8, 11, 8)
       val headsMultipleRoot: Array<Int?> = arrayOf(2, 2, null, 2, 6, 6, 2, 8, null, 8, 11, 8)
@@ -53,7 +51,7 @@ object TreeUtilsSpec : Spek({
 
     }
 
-    on("countRoots") {
+    context("countRoots") {
 
       val headsSingleRoot: Array<Int?> = arrayOf(2, 2, null, 2, 6, 6, 2, 8, 2, 8, 11, 8)
       val headsMultipleRoot: Array<Int?> = arrayOf(2, 2, null, 2, 6, 6, 2, 8, null, 8, 11, 8)
@@ -68,7 +66,7 @@ object TreeUtilsSpec : Spek({
 
     }
 
-    on("getAncestors") {
+    context("getAncestors") {
 
       val heads: Array<Int?> = arrayOf(2, 2, null, 2, 6, 6, 2, 8, 2, 8, 11, 8)
 
@@ -77,7 +75,7 @@ object TreeUtilsSpec : Spek({
       }
     }
 
-    on("containsCycle") {
+    context("containsCycle") {
 
       val heads: Array<Int?> = arrayOf(2, 2, null, 2, 6, 6, 2, 8, 10, 8, 11, 8)
 
@@ -87,7 +85,7 @@ object TreeUtilsSpec : Spek({
     }
 
 
-    on("isNonProjectiveArc") {
+    context("isNonProjectiveArc") {
 
       // You cannot put flavor into   a   bean that is not already there
       //  0    1     2    3      4    5    6    7    8  9   10     11
@@ -144,7 +142,7 @@ object TreeUtilsSpec : Spek({
       }
     }
 
-    on("isNonProjectiveTree") {
+    context("isNonProjectiveTree") {
 
       // You cannot put flavor into   a   bean that is not already there
       //  0    1     2    3      4    5    6    7    8  9   10     11
