@@ -8,6 +8,7 @@
 package com.kotlinnlp.conllio
 
 import com.kotlinnlp.conllio.utils.runAsCommand
+import com.kotlinnlp.utils.getResourceAsStream
 import java.io.File
 import java.nio.file.Paths
 
@@ -17,15 +18,10 @@ import java.nio.file.Paths
 object CoNLLUEvaluator : CorpusEvaluator {
 
   /**
-   * The path of the evaluation script in the resources.
-   */
-  private val SCRIPT_PATH: String =
-    Paths.get(File.separator, "evaluation_scripts", "python", "conll17_ud_eval.py").toString()
-
-  /**
    * The code of the evaluation script.
    */
-  private val SCRIPT_CODE: String = this.javaClass.getResourceAsStream(this.SCRIPT_PATH).reader().readText()
+  private val SCRIPT_CODE: String =
+    getResourceAsStream("evaluation_scripts/python/conll17_ud_eval.py").reader().readText()
 
   /**
    * Evaluate the system output against a gold standard.
