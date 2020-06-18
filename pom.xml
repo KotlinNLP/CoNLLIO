@@ -63,7 +63,7 @@
         <dokka.version>0.9.16</dokka.version>
         <surfire.version>2.22.0</surfire.version>
         <moshi.version>1.5.0</moshi.version>
-        <linguisticdescription.version>0.12.2</linguisticdescription.version>
+        <linguisticdescription.version>0.12.3</linguisticdescription.version>
     </properties>
 
     <repositories>
